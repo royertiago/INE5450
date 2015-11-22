@@ -1,6 +1,8 @@
 #ifndef BALLISTICS_HPP
 #define BALLISTICS_HPP
 
+#include <opencv2/core/core.hpp>
+
 /* Class responsible for computing how much each stepper motor must rotate.
  *
  * The class constructor receives some calibration parameters,
@@ -16,6 +18,26 @@
  */
 
 class Ballistics {
+public:
+    /* Constructs the ballistic calculator with the given callibration data.
+     * Parameters:
+     * p1, p2: Two points in the viewing line of the laser,
+     *  that were detected without rotating the laser.
+     */
+    Ballistics(cv::Mat p1, cv::Mat p2);
+
+// Getters
+
+    /* Vector that points to the front of the laser,
+     * from the point of view of the laser center.
+     */
+    cv::Mat laserFront() const {
+        return _laserFront;
+    }
+
+private:
+
+    cv::Mat _laserFront;
 };
 
 #endif // BALLISTICS_HPP
