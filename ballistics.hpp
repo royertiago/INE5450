@@ -23,21 +23,44 @@ public:
      * Parameters:
      * p1, p2: Two points in the viewing line of the laser,
      *  that were detected without rotating the laser.
+     *  p1 is closer to the laser than p2.
+     *
+     * alpha, q: Rotate the main axis by alpha radians;
+     *  q is the point the laser focus now.
      */
-    Ballistics(cv::Mat p1, cv::Mat p2);
+    Ballistics(cv::Mat p1, cv::Mat p2, double alpha, cv::Mat q);
 
 // Getters
 
     /* Vector that points to the front of the laser,
      * from the point of view of the laser center.
      */
-    cv::Mat laserFront() const {
-        return _laserFront;
+    cv::Mat front() const {
+        return _front;
+    }
+
+    /* Main rotation axis (make the laser rotate horizontally).
+     * Altough is named "up", this is not the view-up vector,
+     * because the front() vector might move up and down
+     * withouth the main axis changing.
+     * (The main axis never change.)
+     */
+    cv::Mat up() const {
+        return _up;
+    }
+
+    /* Center of the laser; the intersection
+     * of both rotation axis.
+     * The center never change.
+     */
+    cv::Mat center() const {
+        return _center;
     }
 
 private:
-
-    cv::Mat _laserFront;
+    cv::Mat _front;
+    cv::Mat _up;
+    cv::Mat _center;
 };
 
 #endif // BALLISTICS_HPP
