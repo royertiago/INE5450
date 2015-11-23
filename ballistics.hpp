@@ -44,6 +44,19 @@ public:
      */
     Ballistics(cv::Mat p1, cv::Mat p2, double alpha, cv::Mat q);
 
+    /* Structure that describes how much each rotation axis must change
+     * after a new point is measured.
+     */
+    struct rotation_data {
+        double main;
+        double secondary;
+    };
+
+    /* Alter the front-view vector to align the center to the point p
+     * and return the rotation data to each of the laser's axis.
+     */
+    rotation_data align(cv::Mat p);
+
 // Getters
 
     /* Vector that points to the front of the laser,
