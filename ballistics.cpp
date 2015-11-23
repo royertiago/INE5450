@@ -3,7 +3,6 @@
 
 Ballistics::Ballistics(cv::Mat p1, cv::Mat p2, double alpha, cv::Mat q) {
     _front = p2 - p1;
-    _front /= cv::norm(_front);
 
     /* Find the intersection between the line p1-p2 and the line l,
      * that passes through q and intersects p1-p2 with an angle of alpha.
@@ -31,4 +30,12 @@ Ballistics::Ballistics(cv::Mat p1, cv::Mat p2, double alpha, cv::Mat q) {
      * we will compute the cross product between these two vectors.
      */
     _up = _front.cross(q - _center);
+    // Now, reposition the _front vector to the current front.
+    _front = q - _center;
+
+    /* Both rotation axis are orthogonal,
+     * and the secondary axis is orthogonal to _front;
+     * thus, another cross-product gives us _left.
+     */
+    _left = _up.cross(_front);
 }

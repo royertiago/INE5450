@@ -15,11 +15,21 @@
  *
  * This class' main focus is on ("ballistic") computations
  * and it is mostly oblivious about the pipeline of the remainder of the program.
+ *
+ * Assumptions about the engine:
+ *  - Both rotation axes actually cross in some point
+ *  - The axes are orthogonal (their director vectors have a null dot product)
+ *  - The front-view vector is always orthogonal to the secondary axis
+ *  - The secondary axis gets rotated around the main axis,
+ *    centered in the crossing between the axes.
  */
 
 class Ballistics {
 public:
     /* Constructs the ballistic calculator with the given callibration data.
+     * The data is a series of measures, with some movement between
+     * each measurement.
+     *
      * Parameters:
      * p1, p2: Two points in the viewing line of the laser,
      *  that were detected without rotating the laser.
@@ -27,6 +37,9 @@ public:
      *
      * alpha, q: Rotate the main axis by alpha radians;
      *  q is the point the laser focus now.
+     *
+     * r: Rotate the secondary axis (by any number of radians).
+     *  r is the point the laser focus now.
      */
     Ballistics(cv::Mat p1, cv::Mat p2, double alpha, cv::Mat q);
 
@@ -57,10 +70,18 @@ public:
         return _center;
     }
 
+    /* Secondary rotation axis (make the laser rotate vertically).
+     * Points to the left of the laser's current focus.
+     */
+    cv::Mat left() const {
+        return _left;
+    }
+
 private:
     cv::Mat _front;
     cv::Mat _up;
     cv::Mat _center;
+    cv::Mat _left;
 };
 
 #endif // BALLISTICS_HPP
