@@ -36,13 +36,11 @@ public:
      *  that were detected without rotating the laser.
      *  p1 is closer to the laser than p2.
      *
-     * alpha, q: Rotate the main axis by alpha radians;
-     *  q is the point the laser focus now.
-     *
-     * r: Rotate the secondary axis (by any number of radians).
-     *  r is the point the laser focus now.
+     * alpha, q1, q2: Rotate the main axis by alpha radians;
+     *  q1 and q2 are two new points in the viewing line of the laser,
+     *  with q1 closer to the laser than q2.
      */
-    Ballistics(cv::Mat p1, cv::Mat p2, double alpha, cv::Mat q);
+    Ballistics(cv::Mat p1, cv::Mat p2, double alpha, cv::Mat q1, cv::Mat q2);
 
     /* Structure that describes how much each rotation axis must change
      * after a new point is measured.
