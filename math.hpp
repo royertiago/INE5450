@@ -15,4 +15,13 @@
  */
 cv::Mat line_line_intersection(cv::Mat p1, cv::Mat p2, cv::Mat q1, cv::Mat q2);
 
+/* Suppose that two vectors A and B are projected in a plane
+ * such that the angle between A and the plane
+ * is the same as the angle between B and the plane.
+ * Given the angle between A and B ('actual_angle')
+ * and the angle between the "projected version" of A and B ('projected_angle'),
+ * this function computes the actual angle of projection.
+ */
+double angle_of_projection( double actual_angle, double projected_angle );
+
 #endif // MATH_HPP
