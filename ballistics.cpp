@@ -20,4 +20,7 @@ Ballistics::Ballistics(cv::Mat p1, cv::Mat p2, double alpha, cv::Mat q1, cv::Mat
 
     _up = compute_rotation_axis( old_front, _front, projection_angle );
     _left = _up.cross(_front);
+
+    _up /= cv::norm(_up);
+    _left /= cv::norm(_left);
 }
