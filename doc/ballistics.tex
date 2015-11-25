@@ -1,0 +1,54 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{tikz}
+
+\begin{document}
+
+\title{Mathematics of \texttt{Ballistics} class}
+\date{}
+\maketitle
+
+\section{Line-line intersection}
+
+(Based on page 304 of book "Graphic Gems")
+
+Suppose we have two lines $P$ and $Q$,
+represented by the points $(p_1, p_2)$ and $(q_1, q_2)$.
+Define the vectors $p$ and $q$ by
+\begin{align*}
+    p &= p_2 - p_1; \\
+    q &= q_2 - q_1.
+\end{align*}
+Then every point in the line $P$ will be of the form $tp + p_1$
+for some real number $t$.
+Similarly, every point in the line $Q$ will be of the form $sq + q_1$.
+They intersect when
+\begin{align*}
+    sq + q_1 &= tp + p_1 \\
+    sq + q_1 - p_1 &= tp
+\end{align*}
+Taking the cross product of both sides with $q$ gives
+\begin{align*}
+    q \times (sq + q_1 - p_1) &= t p \times q \\
+    s q \times q + q \times (q_1 - p_1) &= t p \times q
+\end{align*}
+Since $q \times q = 0$, this simplifies to
+\begin{equation*}
+    q \times (q_1 - p_1) = t p \times q.
+\end{equation*}
+Now, take the dot product of both sides with $p \times q$;
+this will enable us to isolate $t$:
+\begin{align*}
+    \langle q \times (q_1 - p_1), p \times q \rangle
+        &= t \langle p \times q, p \times q \rangle \\
+    \langle q \times (q_1 - p_1), p \times q \rangle &= t ||p \times q|| \\
+    t &= \frac{\langle q \times(q_1, p_1), p \times q \rangle}{||p \times q||}.
+\end{align*}
+Since we have $p_1$, $q_1$, $q$ and $p$, we can compute $t$;
+so, the intersection is
+\begin{equation*}
+    tp + p_1,
+\end{equation*}
+provided the value $|| p \times q ||$ is non-zero.
+\end{document}
