@@ -16,3 +16,17 @@ double angle_of_projection( double actual_angle, double projected_angle ) {
                 (1 - std::cos(projected_angle))
             ));
 }
+
+cv::Mat rotate_around_axis( cv::Mat axis, cv::Mat v, double theta ) {
+    axis /= cv::norm(axis);
+    return v * std::cos(theta) + axis.cross(v) * std::sin(theta) +
+        axis * axis.dot(v) * (1 - std::cos(theta));
+}
+
+cv::Mat compute_rotation_axis(cv::Mat a, cv::Mat b, double projection_angle ) {
+    cv::Mat cross = a.cross(b);
+    cv::Mat m = (a + b)/2;
+
+    double d_angle = std::acos( std::cos(M_PI_2-projection_angle)/cv::norm(m) );
+    return rotate_around_axis( m.cross(cross), m, - d_angle );
+}
