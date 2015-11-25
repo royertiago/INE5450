@@ -144,4 +144,35 @@ Now, replace $\sin^2 \alpha$ by $1 - \cos^2 \alpha$, giving
     \alpha &= \arccos \sqrt{\frac{\cos \gamma - 1}{\cos \beta - 1}}
 \end{align*}
 
+\section{Finding the axis}
+
+Using the same figure (\ref{fig:angle-of-projection}),
+now we seek a way to compute the vector $y$
+(the rotation axis)
+using only $A$, $B$ and the newly-discovered $\alpha$.
+
+The key observation is that the rotation axis $C$,
+the vector $M = (A + B)/2$ and the cross-product $A \times B$
+all lie on the same plane
+(since the angle between any of them and $A$ is the same angle as
+themselves and $B$).
+Thus, we need just to rotate $M$ around $M \times (A \times B)$
+by some angle to get $C$.
+We will compute this angle $\delta$ now.
+
+Let's impose $||C|| = 1$.
+We know then that
+\begin{align*}
+    ||M|| \cos \delta &= \langle C, M \rangle \\
+                      &= \langle C, (A + B) / 2 \rangle \\
+                      &= \frac{ \langle C, A \rangle + \langle C, B \rangle }{2}
+\end{align*}
+Now, as $\langle C, A \rangle$ gives $\cos( \pi/2 - \alpha )$
+(and similarly for $B$),
+we have
+\begin{align*}
+    ||M|| \cos \delta &= \frac{ \cos(\pi/2 - \alpha) + \cos(\pi/2 - \alpha)}{2} \\
+    \cos \delta &= \frac{\cos(\pi/2 - \alpha)}{||M||}.
+\end{align*}
+
 \end{document}
