@@ -60,9 +60,9 @@ provided the value $|| p \times q ||$ is non-zero.
             \draw (0, 0, 0) -- (0, 0, 2);
             \draw (0, 0, 0) -- (0, 2, 0);
             \draw (0, 0, 0) -- (2, 0, 0);
-            \path (0, 0, 2.5) node {$x$};
+            \path (0, 0, 2.5) node {$z$};
             \path (0, 2.5, 0) node {$y$};
-            \path (2.5, 0, 0) node {$z$};
+            \path (2.5, 0, 0) node {$x$};
         \end{scope}
 
         \begin{scope}[rotate around y = -90]
@@ -94,6 +94,54 @@ provided the value $|| p \times q ||$ is non-zero.
             \path (-0.5, 2.25) node {$\gamma$};
         \end{scope}
     \end{tikzpicture}
+    \caption{Problem of angle of projection}
+    \label{fig:angle-of-projection}
 \end{figure}
+
+This problem is depicted in the figure \ref{fig:angle-of-projection}.
+Given the angle $\gamma$ between the vectors $A$ and $B$
+and the angle $\beta$ of their projection in a plane,
+determine the angle $\alpha$ that both make with the plane.
+
+We can assume, without loss of generality,
+that $||A|| = ||B|| = 1$,
+and that $A$ is in the plane $yz$.
+The coordinates of the vector $A$ is
+\begin{equation*}
+    A = (0, \sin \alpha, \cos \alpha).
+\end{equation*}
+The vector $W$, the projection of $B$ in the plane $xz$,
+is a multiple of
+\begin{equation*}
+    W' = (\sin \beta, 0, \cos \beta).
+\end{equation*}
+In the plane $yW$, the vector $B$ can be written as
+\begin{equation*}
+    B = (\cos \alpha, \sin \alpha).
+\end{equation*}
+As this is in the plane $yW$, in the tridimensional space,
+this is
+\begin{align*}
+    B &= \cos \alpha W' + \sin \alpha y \\
+      &= \cos \alpha (\sin \beta, 0, \cos \beta) + \sin \alpha (0, 1, 0) \\
+      &= (\cos \alpha \sin \beta, \sin \alpha, \cos \alpha \cos \beta).
+\end{align*}
+
+As $||A|| = ||B|| = 1$, the inner product of $A$ and $B$ gives $\cos \gamma$.
+Thas is,
+\begin{align*}
+    \cos \gamma &= \langle A, B \rangle \\
+                &= \langle (0, \sin \alpha, \cos \alpha),
+            (\cos \alpha \sin \beta, \sin \alpha, \cos \alpha \cos \beta) \rangle \\
+                &= \sin^2 \alpha + \cos^2 \alpha \cos \beta
+\end{align*}
+Now, replace $\sin^2 \alpha$ by $1 - \cos^2 \alpha$, giving
+\begin{align*}
+    \cos \gamma &= 1 - \cos^2 \alpha + \cos^2 \alpha \cos \beta \\
+    \cos \gamma - 1 &= \cos^2 \alpha( \cos \beta - 1 ) \\
+    \frac{\cos \gamma - 1}{\cos \beta - 1} &= \cos^2 \alpha \\
+    \cos \alpha &= \sqrt{\frac{\cos \gamma - 1}{\cos \beta - 1}} \\
+    \alpha &= \arccos \sqrt{\frac{\cos \gamma - 1}{\cos \beta - 1}}
+\end{align*}
 
 \end{document}
