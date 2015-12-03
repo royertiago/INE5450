@@ -30,3 +30,8 @@ cv::Mat compute_rotation_axis(cv::Mat a, cv::Mat b, double projection_angle ) {
     double d_angle = std::acos( std::cos(M_PI_2-projection_angle)/cv::norm(m) );
     return rotate_around_axis( m.cross(cross), m, - d_angle );
 }
+
+cv::Mat project_on_axis( cv::Mat vector, cv::Mat axis ) {
+    axis /= cv::norm(axis);
+    return axis * (vector.dot(axis));
+}

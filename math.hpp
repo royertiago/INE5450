@@ -31,4 +31,8 @@ cv::Mat rotate_around_axis( cv::Mat axis, cv::Mat v, double theta );
 
 cv::Mat compute_rotation_axis(cv::Mat a, cv::Mat b, double projection_angle );
 
+/* Projects the vector 'vector' in the axis 'axis'.
+ */
+cv::Mat project_on_axis( cv::Mat vector, cv::Mat axis );
+
 #endif // MATH_HPP
