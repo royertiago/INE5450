@@ -18,6 +18,8 @@ public:
 
     bool detect();
 
+    cv::Mat targetPos;
+
 private:
     cv::VideoCapture vCap;
     cv::Mat image;
