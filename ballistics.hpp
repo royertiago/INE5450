@@ -9,7 +9,7 @@
  * from which the object deduces the laser positioning,
  * rotation axes and current angles.
  *
- * Each call to operator()() returns how much each stepper must rotate
+ * Each call to align() returns how much each stepper must rotate
  * in order to point the laser to the newly given point,
  * in relation to the point given before.
  *
@@ -17,7 +17,6 @@
  * and it is mostly oblivious about the pipeline of the remainder of the program.
  *
  * Assumptions about the engine:
- *  - The rotation axes and the front vector start all three orthogonal.
  *  - Both rotation axes actually cross in some point
  *  - The axes are orthogonal (their director vectors have a null dot product)
  *  - The front-view vector is always orthogonal to the secondary axis
