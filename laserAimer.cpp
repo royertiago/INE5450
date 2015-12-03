@@ -30,7 +30,7 @@ LaserAimer::LaserAimer(Stepper* verticalStepper, Stepper* horizontalStepper)
         std::cout << "attr_setschedparam(&custom_sched_attr1, &fifo_param1)" << std::endl;
         throw std::runtime_error("attr_setschedparam(&custom_sched_attr1, &fifo_param1)");
     }
-    ret = pthread_create(&_this, &custom_sched_attr1, run, 0);
+    ret = pthread_create(&_this, &custom_sched_attr1, run, (void*)this);
     if(ret){
         std::cout << "pthread_create(&_this, &custom_sched_attr1, run, 0)" << std::endl;
         throw std::runtime_error("pthread_create(&_this, &custom_sched_attr1, run, 0)");

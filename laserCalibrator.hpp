@@ -13,13 +13,17 @@
 #include <vector>
 
 #include "stepper.hpp"
+#include "targetDetector.hpp"
 
 class LaserCalibrator{
     
 public:
-    LaserCalibrator(double angle, Stepper* verticalStepper, Stepper* horizontalStepper, int capID, char* cameraParamsPath, double markerSize);
+    LaserCalibrator(double angle, Stepper* verticalStepper, Stepper* horizontalStepper, TargetDetector* detector);
 
-    cv::Mat points;
+    cv::Mat point1;
+    cv::Mat point2;
+    cv::Mat point3;
+    cv::Mat point4;
     double angle;
 
     bool start();
@@ -29,9 +33,7 @@ private:
     Stepper* verticalStepper;
     Stepper* horizontalStepper;
 
-    cv::VideoCapture capture;
-    aruco::CameraParameters camParams;
-    double markerSize;
+    TargetDetector* detector;
 
     void getPoint(aruco::Marker& marker, cv::Mat& out);
 };

@@ -19,7 +19,7 @@ public:
     const unsigned int STEPS_PER_REVOLUTION;
     const float DEGREES_PER_STEP;
 
-private:
+public://private:
 
     unsigned char state;
 

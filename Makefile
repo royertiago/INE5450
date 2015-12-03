@@ -19,7 +19,7 @@ endef
 # that include several files.
 CXXFLAGS ?= -g
 ALL_CXXFLAGS := $(CXXFLAGS) -std=c++1y -iquote./ $$(pkg-config --cflags opencv)
-ALL_LDFLAGS += $$(pkg-config --libs opencv) -laruco
+ALL_LDFLAGS += -pthread $$(pkg-config --libs opencv) -laruco -lwiringPi
 
 # Subdirecories thad need to be ignored by find.
 findignore := ./.git
