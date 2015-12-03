@@ -24,3 +24,49 @@ Ballistics::Ballistics(cv::Mat p1, cv::Mat p2, double alpha, cv::Mat q1, cv::Mat
     _up /= cv::norm(_up);
     _left /= cv::norm(_left);
 }
+
+Ballistics::rotation_data Ballistics::align(cv::Mat p) {
+    p -= _center;
+    rotation_data ret;
+
+    // Projection on secondary rotation plane
+    cv::Mat ps = project_on_axis( p, _up ) +
+        project_on_axis( p, _up.cross(_left) );
+
+    ret.secondary = std::acos( ps.dot(_front) / cv::norm(ps) );
+
+    // Now, fix if is wrong
+    if( cv::norm( ps - rotate_around_axis(_left, _front, -ret.secondary) )
+        < cv::norm( ps - rotate_around_axis(_left, _front, ret.secondary) ) )
+        ret.secondary = -ret.secondary;
+    // TODO: There must be a smarter way of doing this.
+
+    // Projection on primary rotation plane
+    cv::Mat pp = project_on_axis( p, _left ) +
+        project_on_axis( p, _up.cross(_left) );
+
+    // Projection of front in the secondary rotation plane
+    cv::Mat fp = project_on_axis( _front, _left ) +
+        project_on_axis( _front, _up.cross(_left) );
+
+    if( cv::norm(pp) < 1e-8 && cv::norm(fp) < 1e-8 ) {
+        /* Arbitrarily chosen constants
+         * This is to avoid division by zero.
+         */
+        ret.main = 0.0;
+    }
+    else {
+        ret.main = std::acos( pp.dot(_front) / cv::norm(pp) );
+
+        // Fix again if is wrong
+        if( cv::norm( pp - rotate_around_axis(_up, fp, -ret.main) )
+            < cv::norm( pp - rotate_around_axis(_up, fp, ret.main) ) )
+            ret.main = -ret.main;
+    }
+
+    // Align axis _left and _front
+    _front = p;
+    _left = rotate_around_axis(_up, _left, ret.main);
+
+    return ret;
+}
