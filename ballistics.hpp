@@ -34,11 +34,12 @@ public:
      * Parameters:
      * p1, p2: Two points in the viewing line of the laser,
      *  that were detected without rotating the laser.
-     *  p1 is closer to the laser than p2.
+     *  The points must be different,
+     *  and both must not be exactly in the center of the laser,
+     *  but it makes no difference which of them are closer to the laser.
      *
      * alpha, q1, q2: Rotate the main axis by alpha radians;
-     *  q1 and q2 are two new points in the viewing line of the laser,
-     *  with q1 closer to the laser than q2.
+     *  q1 and q2 are two new points in the viewing line of the laser.
      */
     Ballistics(cv::Mat p1, cv::Mat p2, double alpha, cv::Mat q1, cv::Mat q2);
 

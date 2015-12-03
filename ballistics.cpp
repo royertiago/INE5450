@@ -9,10 +9,10 @@ Ballistics::Ballistics(cv::Mat p1, cv::Mat p2, double alpha, cv::Mat q1, cv::Mat
      * that pointed to the front view of the laser,
      * in the first two measurements.
      */
-    cv::Mat old_front = p2 - p1;
+    cv::Mat old_front = p1 - _center;
     old_front /= cv::norm(old_front);
 
-    _front = q2 - q1;
+    _front = q1 - _center;
     _front /= cv::norm(_front);
 
     double actual_angle = std::acos(old_front.dot(_front));
