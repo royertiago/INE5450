@@ -69,7 +69,7 @@ void LaserAimer::operator()() {
             updateHorizontal(horizontalStepper->DEGREES_PER_STEP);
             horizontalStepper->stepForward();
         }
-//        sleep( 2 );
+        usleep(2);
     }
 }
 

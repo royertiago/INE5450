@@ -3,8 +3,10 @@
 
 #include <pthread.h>
 #include <iostream>
-#include "stepper.hpp"
 #include <stdexcept>
+#include <unistd.h>
+
+#include "stepper.hpp"
 
 class LaserAimer{
 
