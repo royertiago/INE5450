@@ -8,15 +8,11 @@ LaserCalibrator::LaserCalibrator(double angle, Stepper* verticalStepper, Stepper
 
 bool LaserCalibrator::start(){
 
-
-
-
     int cont = 0;
 
     std::cout << "press s to take a shot" << std::endl;
 
     while(true){
-
 
         std::string input;
         std::getline(std::cin,input);
@@ -34,19 +30,19 @@ bool LaserCalibrator::start(){
                 std::cout << "press s to take a shot" << std::endl;
             }
             else if(cont == 1){
-                detector->targetPos.copyTo(point1);
+                detector->targetPos.copyTo(point2);
 
                 horizontalStepper->step(angle / (horizontalStepper->DEGREES_PER_STEP));
 
                 std::cout << "press s to take a shot" << std::endl;
             }
             else if(cont == 2){
-                detector->targetPos.copyTo(point1);
+                detector->targetPos.copyTo(point3);
 
                 std::cout << "press s to take a shot" << std::endl;
             }
             else if(cont == 3){
-                detector->targetPos.copyTo(point1);
+                detector->targetPos.copyTo(point4);
 
                 std::cout << "calibration points extracted" << std::endl;
 
@@ -59,10 +55,7 @@ bool LaserCalibrator::start(){
             std::cout << "abort!" << std::endl;
             return false;
         }
-
-
     }
-
 }
 
 
