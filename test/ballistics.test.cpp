@@ -23,54 +23,28 @@ TEST_CASE( "assert_near self-test" ) {
 }
 
 TEST_CASE( "Construction of an origin-centered Ballistics object", "[ballistics]" ) {
-    Ballistics eniac(
-            (cv::Mat_<double>(3, 1) << std::sqrt(2)/2, std::sqrt(2)/2, 1),
-            (cv::Mat_<double>(3, 1) << std::sqrt(2), std::sqrt(2), 2),
-            3.14159/4,
-            (cv::Mat_<double>(3, 1) << 1, 0, 1),
-            (cv::Mat_<double>(3, 1) << 2, 0, 2)
-        );
-    assert_near( eniac.center(), vec( 0, 0, 0 ) );
-    assert_near( eniac.up(), vec( 0, 0, 1 ) );
-    assert_near( eniac.front(), vec( std::sqrt(2)/2, 0, std::sqrt(2)/2) );
-    assert_near( eniac.left(), vec( 0, 1, 0 ) );
+    cv::Mat p1 = vec(std::sqrt(2)/2, std::sqrt(2)/2, 1);
+    cv::Mat p2 = vec(std::sqrt(2), std::sqrt(2), 2);
+    cv::Mat q1 = vec(1, 0, 1);
+    cv::Mat q2 = vec(2, 0, 2);
+    double angle = 3.141592653589793238462643383/4;
 
-    // Now with vector orders reversed
-    eniac = Ballistics(
-            (cv::Mat_<double>(3, 1) << std::sqrt(2), std::sqrt(2), 2),
-            (cv::Mat_<double>(3, 1) << std::sqrt(2)/2, std::sqrt(2)/2, 1),
-            3.14159/4,
-            (cv::Mat_<double>(3, 1) << 2, 0, 2),
-            (cv::Mat_<double>(3, 1) << 1, 0, 1)
-        );
-    assert_near( eniac.center(), vec( 0, 0, 0 ) );
-    assert_near( eniac.up(), vec( 0, 0, 1 ) );
-    assert_near( eniac.front(), vec( std::sqrt(2)/2, 0, std::sqrt(2)/2) );
-    assert_near( eniac.left(), vec( 0, 1, 0 ) );
+    auto check = []( Ballistics & eniac ) {
+        assert_near( eniac.center(), vec( 0, 0, 0 ) );
+        assert_near( eniac.up(), vec( 0, 0, 1 ) );
+        assert_near( eniac.front(), vec( std::sqrt(2)/2, 0, std::sqrt(2)/2) );
+        assert_near( eniac.left(), vec( 0, 1, 0 ) );
+    };
 
-    // Now with just the first reversed
-    eniac = Ballistics(
-            (cv::Mat_<double>(3, 1) << std::sqrt(2), std::sqrt(2), 2),
-            (cv::Mat_<double>(3, 1) << std::sqrt(2)/2, std::sqrt(2)/2, 1),
-            3.14159/4,
-            (cv::Mat_<double>(3, 1) << 1, 0, 1),
-            (cv::Mat_<double>(3, 1) << 2, 0, 2)
-        );
-    assert_near( eniac.center(), vec( 0, 0, 0 ) );
-    assert_near( eniac.up(), vec( 0, 0, 1 ) );
-    assert_near( eniac.front(), vec( std::sqrt(2)/2, 0, std::sqrt(2)/2) );
-    assert_near( eniac.left(), vec( 0, 1, 0 ) );
+    Ballistics eniac( p1, p2, angle, q1, q2 );
+    check( eniac );
 
-    // Now with just the second reversed
-    eniac = Ballistics(
-            (cv::Mat_<double>(3, 1) << std::sqrt(2)/2, std::sqrt(2)/2, 1),
-            (cv::Mat_<double>(3, 1) << std::sqrt(2), std::sqrt(2), 2),
-            3.14159/4,
-            (cv::Mat_<double>(3, 1) << 2, 0, 2),
-            (cv::Mat_<double>(3, 1) << 1, 0, 1)
-        );
-    assert_near( eniac.center(), vec( 0, 0, 0 ) );
-    assert_near( eniac.up(), vec( 0, 0, 1 ) );
-    assert_near( eniac.front(), vec( std::sqrt(2)/2, 0, std::sqrt(2)/2) );
-    assert_near( eniac.left(), vec( 0, 1, 0 ) );
+    eniac = Ballistics( p2, p1, angle, q1, q2 );
+    check( eniac );
+
+    eniac = Ballistics( p1, p2, angle, q2, q1 );
+    check( eniac );
+
+    eniac = Ballistics( p2, p1, angle, q2, q1 );
+    check( eniac );
 }
