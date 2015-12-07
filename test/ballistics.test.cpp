@@ -1,5 +1,6 @@
 #include "ballistics.hpp"
 #include <catch.hpp>
+#include <limits>
 
 /* Catch's Approx macro has no support for OpenCV,
  * so we must "implement" it separately.
@@ -8,7 +9,9 @@
  * because it logs the matrices values before running the test,
  * thus producing better error messages.
  */
-void assert_near( cv::Mat a, cv::Mat b, double epsilon = 1e-5 ) {
+void assert_near( cv::Mat a, cv::Mat b,
+    double epsilon = std::numeric_limits<double>::epsilon() * 100
+) {
     INFO( a << "\n !=~ \n" << b << ", epsilon = " << epsilon );
     CHECK( cv::norm(a - b) < epsilon );
 }
