@@ -3,6 +3,10 @@
 
 /* Catch's Approx macro has no support for OpenCV,
  * so we must "implement" it separately.
+ *
+ * This function is better than simply checking if the norm is below a limit
+ * because it logs the matrices values before running the test,
+ * thus producing better error messages.
  */
 void assert_near( cv::Mat a, cv::Mat b, double epsilon = 1e-5 ) {
     INFO( a << "\n !=~ \n" << b << ", epsilon = " << epsilon );
