@@ -35,20 +35,20 @@ bool TargetDetector::detect()
     cv::Mat tVec = markers[0].Tvec;
     cv::Mat poseMat = cv::Mat::zeros(3, 4, CV_64FC1);
 
-    poseMat.at<double>(0, 0) = rMat.at<double>(0, 0);
-    poseMat.at<double>(0, 1) = rMat.at<double>(0, 1);
-    poseMat.at<double>(0, 2) = rMat.at<double>(0, 2);
-    poseMat.at<double>(0, 3) = tVec.at<double>(0, 0);
+    poseMat.at<double>(0, 0) = rMat.at<float>(0, 0);
+    poseMat.at<double>(0, 1) = rMat.at<float>(0, 1);
+    poseMat.at<double>(0, 2) = rMat.at<float>(0, 2);
+    poseMat.at<double>(0, 3) = tVec.at<float>(0, 0);
 
-    poseMat.at<double>(1, 0) = rMat.at<double>(1, 0);
-    poseMat.at<double>(1, 1) = rMat.at<double>(1, 1);
-    poseMat.at<double>(1, 2) = rMat.at<double>(1, 2);
-    poseMat.at<double>(1, 3) = tVec.at<double>(1, 0);
+    poseMat.at<double>(1, 0) = rMat.at<float>(1, 0);
+    poseMat.at<double>(1, 1) = rMat.at<float>(1, 1);
+    poseMat.at<double>(1, 2) = rMat.at<float>(1, 2);
+    poseMat.at<double>(1, 3) = tVec.at<float>(1, 0);
 
-    poseMat.at<double>(2, 0) = rMat.at<double>(2, 0);
-    poseMat.at<double>(2, 1) = rMat.at<double>(2, 1);
-    poseMat.at<double>(2, 2) = rMat.at<double>(2, 2);
-    poseMat.at<double>(2, 3) = tVec.at<double>(2, 0);
+    poseMat.at<double>(2, 0) = rMat.at<float>(2, 0);
+    poseMat.at<double>(2, 1) = rMat.at<float>(2, 1);
+    poseMat.at<double>(2, 2) = rMat.at<float>(2, 2);
+    poseMat.at<double>(2, 3) = tVec.at<float>(2, 0);
 
 
     cv::Mat markerPoint = cv::Mat::zeros(4, 1, CV_64FC1);
