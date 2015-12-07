@@ -1,0 +1,16 @@
+# LaTeX/latexmk files
+*.aux
+*.dep.mk
+*.fdb_latexmk
+*.fls
+*.log
+*.pdf
+
+# Object files
+*.o
+
+# Makefile dependency record
+*.dep.mk
+
+# Vim swap files
+.*.swp
