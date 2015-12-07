@@ -52,7 +52,7 @@ void Aimer::operator()(){
 
     while(!stop){
 
-        if(detector.detect()){
+        if(detector->detect()){
             auto angles = eniac->align(detector->targetPos);
 
             std::cout << "main angle = " << angles.main << " seccond angle = " << angles.secondary << std::endl;
@@ -60,8 +60,8 @@ void Aimer::operator()(){
             double mainDegre = angles.main * 180.0 / M_PI;
             double secondDegre = angles.secondary * 180.0 / M_PI;
 
-            aimer->updateVertical(secondDegre);
-            aimer->updateHorizontal(mainDegre);
+            laserAim->updateVertical(secondDegre);
+            laserAim->updateHorizontal(mainDegre);
         }
 
     }  

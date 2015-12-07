@@ -15,7 +15,7 @@ void* run(void*);
 
 Ballistics* eniac;
 LaserAimer* laserAim;
-Stepper* veticalStepper;
+Stepper* verticalStepper;
 Stepper* horizontalStepper;
 
 TargetDetector detector(0, "param_camera_philips_quadradinha.yml", 0.145);

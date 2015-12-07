@@ -3,8 +3,9 @@
 
 #include "targetDetector.hpp"
 #include "laserAimer.hpp"
+#include "ballistics.hpp"
 
-#include <pthread>
+#include <pthread.h>
 #include <iostream>
 
 
@@ -28,7 +29,7 @@ private:
 
 	pthread_t _this;
     bool stop;
-}
+};
 
 
 #endif
