@@ -13,10 +13,11 @@ void assert_near( cv::Mat a, cv::Mat b, double epsilon = 1e-5 ) {
     CHECK( cv::norm(a - b) < epsilon );
 }
 
+// Syntactic sugar.
+cv::Mat vec( double a, double b, double c ) {
+    return cv::Mat_<double>(3, 1) << a, b, c;
+}
+
 TEST_CASE( "assert_near self-test" ) {
-    assert_near(
-            (cv::Mat_<double>(3, 1) << 0, 0, 0),
-            (cv::Mat_<double>(3, 1) << 0, 0, 1e-7),
-            1e-5
-        );
+    assert_near( vec(0, 0, 0), vec(0, 0, 1e-7), 1e-5 );
 }
