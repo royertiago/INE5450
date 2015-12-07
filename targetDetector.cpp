@@ -22,7 +22,7 @@ bool TargetDetector::detect()
 
     mDetector.detect(image, markers, camParams, markerSize);
 
-    if(markers.size())
+    if(!markers.size())
         return false;
 
 
