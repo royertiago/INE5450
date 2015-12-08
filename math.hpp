@@ -24,8 +24,9 @@ cv::Mat line_line_intersection(cv::Mat p1, cv::Mat p2, cv::Mat q1, cv::Mat q2);
  */
 double angle_of_projection( double actual_angle, double projected_angle );
 
-/* Rotate the vector v around the given axis
- * by theta radians.
+/* Rotate the vector v around the given axis by theta radians.
+ *
+ * This function assumes a right-handed coordinate system.
  */
 cv::Mat rotate_around_axis( cv::Mat axis, cv::Mat v, double theta );
 
