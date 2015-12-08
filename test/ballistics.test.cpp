@@ -1,5 +1,6 @@
 #include "ballistics.hpp"
 #include <catch.hpp>
+#include <cmath>
 #include <limits>
 
 /* Catch's Approx macro has no support for OpenCV,
@@ -62,4 +63,37 @@ TEST_CASE( "Construction of an origin-centered Ballistics object", "[ballistics]
     ASSERT_NEAR( eniac.up(), vec(0, 0, 1) );
     ASSERT_NEAR( eniac.front(), vec( std::sqrt(2)/2, 0, std::sqrt(2)/2) );
     ASSERT_NEAR( eniac.left(), vec( 0, 1, 0 ) );
+}
+
+TEST_CASE( "Ballistics aiming", "[ballistics]" ) {
+    cv::Mat p1 = vec(1, 0, 1);
+    cv::Mat p2 = vec(2, 0, 2);
+    cv::Mat q1 = vec(std::sqrt(2)/2, std::sqrt(2)/2, 1);
+    cv::Mat q2 = vec(std::sqrt(2), std::sqrt(2), 2);
+    double angle = 3.141592653589793238462643383/4;
+    Ballistics eniac( p1, p2, angle, q1, q2 );
+
+    SECTION( "Aiming down first" ) {
+        auto pair = eniac.align( vec(0.5, 0.5, 0) );
+        CHECK( pair.main == Approx(0) );
+        CHECK( pair.secondary == Approx(M_PI_4) );
+        ASSERT_NEAR( eniac.front(), vec(std::sqrt(2)/2, std::sqrt(2)/2, 0) );
+        ASSERT_NEAR( eniac.left(), vec( -std::sqrt(2)/2, std::sqrt(2)/2, 0 ) );
+    }
+
+    SECTION( "Aiming right first" ) {
+        auto pair = eniac.align( vec(1, 0, 1) );
+        CHECK( pair.main == Approx(-M_PI_4) );
+        CHECK( pair.secondary == Approx(0) );
+        ASSERT_NEAR( eniac.front(), vec(std::sqrt(2)/2, 0, std::sqrt(2)/2) );
+        ASSERT_NEAR( eniac.left(), vec(0, 1, 0) );
+    }
+
+    SECTION( "Aiming left first" ) {
+        auto pair = eniac.align( vec(0, 1, 1) );
+        CHECK( pair.main == Approx(M_PI_4) );
+        CHECK( pair.secondary == Approx(0) );
+        ASSERT_NEAR( eniac.front(), vec(0, std::sqrt(2)/2, std::sqrt(2)/2) );
+        ASSERT_NEAR( eniac.left(), vec(-1, 0, 0) );
+    }
 }
