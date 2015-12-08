@@ -44,44 +44,62 @@ Ballistics::rotation_data Ballistics::align(cv::Mat p) {
     p -= _center;
     rotation_data ret;
 
-    // Projection on secondary rotation plane
-    cv::Mat ps = project_on_axis( p, _up ) +
-        project_on_axis( p, _up.cross(_left) );
+    // First, compute the rotation in the main axis
+    {
+        // Projection on primary rotation plane
+        cv::Mat pp = project_on_axis( p, _left ) +
+            project_on_axis( p, _up.cross(_left) );
 
-    ret.secondary = angle_between( ps, _front );
+        // Projection of front in the secondary rotation plane
+        cv::Mat fp = project_on_axis( _front, _left ) +
+            project_on_axis( _front, _up.cross(_left) );
 
-    // Now, fix if is wrong
-    if( cv::norm( ps - rotate_around_axis(_left, _front, -ret.secondary) )
-        < cv::norm( ps - rotate_around_axis(_left, _front, ret.secondary) ) )
-        ret.secondary = -ret.secondary;
-    // TODO: There must be a smarter way of doing this.
+        if( cv::norm(pp) < 1e-8 && cv::norm(fp) < 1e-8 ) {
+            /* Arbitrarily chosen constants
+             * This is to avoid division by zero.
+             */
+            ret.main = 0.0;
+        }
+        else {
+            ret.main = angle_between( pp, fp );
 
-    // Projection on primary rotation plane
-    cv::Mat pp = project_on_axis( p, _left ) +
-        project_on_axis( p, _up.cross(_left) );
+            /* Note the value returned by angle_between is "unsigned",
+             * and we need the angle to be "signed"
+             * (that is, positive is counterclockwise and negative is clockwise
+             * if the rotation axis points towards you.)
+             */
+            if( cv::norm( pp - rotate_around_axis(_up, fp, -ret.main) )
+                < cv::norm( pp - rotate_around_axis(_up, fp, ret.main) ) )
+                ret.main = -ret.main;
+            // TODO: There must be a smarter way of doing this.
+        }
+    } // Rotation in the main axis computed.
 
-    // Projection of front in the secondary rotation plane
-    cv::Mat fp = project_on_axis( _front, _left ) +
-        project_on_axis( _front, _up.cross(_left) );
+    /* Now, to compute the rotation in the secondary axis,
+     * we will first rotate everything through the primary axis.
+     * We cannot use projections directly because the rotation plane itself
+     * will be rotated around the primary axis.
+     *
+     * Note p remains still; what rotates is _front and _left.
+     * (_front will be adjusted again later; _left is on its final form.)
+     */
+    _front = rotate_around_axis( _up, _front, ret.main );
+    _left = rotate_around_axis( _up, _left, ret.main );
 
-    if( cv::norm(pp) < 1e-8 && cv::norm(fp) < 1e-8 ) {
-        /* Arbitrarily chosen constants
-         * This is to avoid division by zero.
+    // Compute the rotation around the secondary axis
+    {
+        /* This one is easier since both p and _front are on the rotation plane.
          */
-        ret.main = 0.0;
-    }
-    else {
-        ret.main = angle_between( pp, fp );
+        ret.secondary = angle_between( p, _front );
 
-        // Fix again if is wrong
-        if( cv::norm( pp - rotate_around_axis(_up, fp, -ret.main) )
-            < cv::norm( pp - rotate_around_axis(_up, fp, ret.main) ) )
-            ret.main = -ret.main;
-    }
+        // Again compute the sign of the rotation
+        if( cv::norm( p - rotate_around_axis(_left, _front, -ret.secondary) )
+            < cv::norm( p - rotate_around_axis(_left, _front, ret.secondary) ) )
+            ret.secondary = -ret.secondary;
+    } // Rotation in the secondary axis computed.
 
-    // Align axis _left and _front
-    _front = p;
-    _left = rotate_around_axis(_up, _left, ret.main);
+    // Finally, "rotate" _front in the secondary rotation plane.
+    _front = p / cv::norm(p);
 
     return ret;
 }
