@@ -17,6 +17,14 @@
  * and it is mostly oblivious about the pipeline of the remainder of the program.
  *
  * Assumptions about the engine:
+ *  - The engine follows the right-hand rule.
+ *    That is, if the rotation axis is the z axis (0, 0, 1),
+ *    then rotating the point (1, 0, 0) in the x axis by pi/2 radians
+ *    yields the point (0, 1, 0) in the y axis.
+ *  - The secondary rotation axis points "left" from the laser viewpoint.
+ *    Together with the previous assumption, this meas that
+ *    a positive rotation in the secondary axis lowers the laser,
+ *    and a negative rotation raises the laser.
  *  - Both rotation axes actually cross in some point
  *  - The axes are orthogonal (their director vectors have a null dot product)
  *  - The front-view vector is always orthogonal to the secondary axis
@@ -39,6 +47,7 @@ public:
      *
      * alpha, q1, q2: Rotate the main axis by alpha radians;
      *  q1 and q2 are two new points in the viewing line of the laser.
+     *  alpha must be in the interval (-pi, pi) and must be nonzero.
      */
     Ballistics(cv::Mat p1, cv::Mat p2, double alpha, cv::Mat q1, cv::Mat q2);
 
