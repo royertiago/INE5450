@@ -55,4 +55,9 @@ TEST_CASE( "Construction of an origin-centered Ballistics object", "[ballistics]
 
     eniac = Ballistics( p2, p1, angle, q2, q1 );
     check( eniac, __LINE__ );
+
+    // Test with a negative angle
+    eniac = Ballistics( q1, q2, -angle, p1, p2 );
+    ASSERT_NEAR( eniac.center(), vec(0, 0, 0) );
+    ASSERT_NEAR( eniac.up(), vec(0, 0, 1) );
 }

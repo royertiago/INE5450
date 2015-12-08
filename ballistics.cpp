@@ -18,7 +18,22 @@ Ballistics::Ballistics(cv::Mat p1, cv::Mat p2, double alpha, cv::Mat q1, cv::Mat
     double actual_angle = std::acos(old_front.dot(_front));
     double projection_angle = angle_of_projection( actual_angle, alpha );
 
-    _up = compute_rotation_axis( old_front, _front, projection_angle );
+    if( alpha > 0 ) {
+        /* There was a positive rotation from old_front to _front,
+         * and it is, by exigence, less than pi.
+         * So, this satisfies the assumptions of compute_rotation_axis.
+         */
+        _up = compute_rotation_axis( old_front, _front, projection_angle );
+    }
+    else {
+        /* There was a negative rotation from old_front to _front.
+         * This violetes the assumptions made by compute_rotation_axis,
+         * so we will pretend that there was a positive rotation
+         * from _front to old_front during the computation of _up.
+         */
+        _up = compute_rotation_axis( _front, old_front, projection_angle );
+    }
+
     _left = _up.cross(_front);
 
     _up /= cv::norm(_up);
