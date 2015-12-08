@@ -28,7 +28,7 @@ cv::Mat compute_rotation_axis(cv::Mat a, cv::Mat b, double projection_angle ) {
     cv::Mat m = (a + b)/2;
 
     double d_angle = std::acos( std::sin(projection_angle)/cv::norm(m) );
-    return rotate_around_axis( m.cross(cross), m, - d_angle );
+    return rotate_around_axis( m.cross(cross), m, d_angle );
 }
 
 cv::Mat project_on_axis( cv::Mat vector, cv::Mat axis ) {

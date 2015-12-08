@@ -31,17 +31,17 @@ TEST_CASE( "assert_near self-test" ) {
 }
 
 TEST_CASE( "Construction of an origin-centered Ballistics object", "[ballistics]" ) {
-    cv::Mat p1 = vec(std::sqrt(2)/2, std::sqrt(2)/2, 1);
-    cv::Mat p2 = vec(std::sqrt(2), std::sqrt(2), 2);
-    cv::Mat q1 = vec(1, 0, 1);
-    cv::Mat q2 = vec(2, 0, 2);
+    cv::Mat p1 = vec(1, 0, 1);
+    cv::Mat p2 = vec(2, 0, 2);
+    cv::Mat q1 = vec(std::sqrt(2)/2, std::sqrt(2)/2, 1);
+    cv::Mat q2 = vec(std::sqrt(2), std::sqrt(2), 2);
     double angle = 3.141592653589793238462643383/4;
 
     auto check = []( Ballistics & eniac, int line ) {
         assert_near( line, eniac.center(), vec( 0, 0, 0 ) );
         assert_near( line, eniac.up(), vec( 0, 0, 1 ) );
-        assert_near( line, eniac.front(), vec( std::sqrt(2)/2, 0, std::sqrt(2)/2) );
-        assert_near( line, eniac.left(), vec( 0, 1, 0 ) );
+        assert_near( line, eniac.front(), vec( 0.5, 0.5, std::sqrt(2)/2 ) );
+        assert_near( line, eniac.left(), vec( -std::sqrt(2)/2, std::sqrt(2)/2, 0 ) );
     };
 
     Ballistics eniac( p1, p2, angle, q1, q2 );
@@ -60,4 +60,6 @@ TEST_CASE( "Construction of an origin-centered Ballistics object", "[ballistics]
     eniac = Ballistics( q1, q2, -angle, p1, p2 );
     ASSERT_NEAR( eniac.center(), vec(0, 0, 0) );
     ASSERT_NEAR( eniac.up(), vec(0, 0, 1) );
+    ASSERT_NEAR( eniac.front(), vec( std::sqrt(2)/2, 0, std::sqrt(2)/2) );
+    ASSERT_NEAR( eniac.left(), vec( 0, 1, 0 ) );
 }
