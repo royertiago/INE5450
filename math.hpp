@@ -29,6 +29,11 @@ double angle_of_projection( double actual_angle, double projected_angle );
  */
 cv::Mat rotate_around_axis( cv::Mat axis, cv::Mat v, double theta );
 
+/* Computes the rotation axis c satisfying:
+ * - The angle between the rotation plane and a and b is projection_angle.
+ * - There is some angle alpha in the range (0, pi) such that
+ *   rotating a around c by alpha radians gives b.
+ */
 cv::Mat compute_rotation_axis(cv::Mat a, cv::Mat b, double projection_angle );
 
 /* Projects the vector 'vector' in the axis 'axis'.
