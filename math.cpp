@@ -35,3 +35,22 @@ cv::Mat project_on_axis( cv::Mat vector, cv::Mat axis ) {
     axis /= cv::norm(axis);
     return axis * (vector.dot(axis));
 }
+
+double angle_between( cv::Mat a, cv::Mat b ) {
+    double dot_product = a.dot(b) / (cv::norm(a) * cv::norm(b));
+    /* Mathematically, the value dot_product is guaranteed to
+     * never extrapolate 1. However, there might be rounding errors,
+     * and the value of dot_product may be 1 + (machine epsilon), for instance.
+     * In this case, dot_product > 1 and std::acos is required by the law
+     * (C99 Standard, N1256, section 7.12.4.1) to produce a domain error,
+     * rendering the return value unreliable (7.12.1, paragraph 2).
+     *
+     * Therefore, if dot_product > 1, it is due to rounding errors,
+     * and we may force the angle to be 0.
+     */
+    if( dot_product > 1 )
+        return 0;
+    if( dot_product < -1 )
+        return M_PI;
+    return std::acos(dot_product);
+}

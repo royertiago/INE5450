@@ -15,7 +15,7 @@ Ballistics::Ballistics(cv::Mat p1, cv::Mat p2, double alpha, cv::Mat q1, cv::Mat
     _front = q1 - _center;
     _front /= cv::norm(_front);
 
-    double actual_angle = std::acos(old_front.dot(_front));
+    double actual_angle = angle_between( old_front, _front );
     double projection_angle = angle_of_projection( actual_angle, alpha );
 
     if( alpha > 0 ) {
@@ -48,7 +48,7 @@ Ballistics::rotation_data Ballistics::align(cv::Mat p) {
     cv::Mat ps = project_on_axis( p, _up ) +
         project_on_axis( p, _up.cross(_left) );
 
-    ret.secondary = std::acos( ps.dot(_front) / cv::norm(ps) );
+    ret.secondary = angle_between( ps, _front );
 
     // Now, fix if is wrong
     if( cv::norm( ps - rotate_around_axis(_left, _front, -ret.secondary) )
@@ -71,23 +71,7 @@ Ballistics::rotation_data Ballistics::align(cv::Mat p) {
         ret.main = 0.0;
     }
     else {
-        fp /= cv::norm(fp);
-        pp /= cv::norm(pp);
-        double dot_product = pp.dot(fp);
-        /* Mathematically, the value dot_product is guaranteed to
-         * never extrapolate 1. However, there might be rounding errors,
-         * and the value of dot_product may be 1 + (machine epsilon), for instance.
-         * In this case, dot_product > 1 and std::acos is required by the law
-         * (C99 Standard, N1256, section 7.12.4.1) to produce a domain error,
-         * rendering the return value unreliable (7.12.1, paragraph 2).
-         *
-         * Therefore, if dot_product > 1, it is due to rounding errors,
-         * and we may force the angle to be 0.
-         */
-        if( dot_product > 1 )
-            ret.main = 0;
-        else
-            ret.main = std::acos( pp.dot(fp) );
+        ret.main = angle_between( pp, fp );
 
         // Fix again if is wrong
         if( cv::norm( pp - rotate_around_axis(_up, fp, -ret.main) )

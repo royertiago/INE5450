@@ -41,4 +41,8 @@ cv::Mat compute_rotation_axis(cv::Mat a, cv::Mat b, double projection_angle );
  */
 cv::Mat project_on_axis( cv::Mat vector, cv::Mat axis );
 
+/* Returns the angle between the two vectors.
+ */
+double angle_between( cv::Mat a, cv::Mat b );
+
 #endif // MATH_HPP
