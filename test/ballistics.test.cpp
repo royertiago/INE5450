@@ -96,4 +96,20 @@ TEST_CASE( "Ballistics aiming", "[ballistics]" ) {
         ASSERT_NEAR( eniac.front(), vec(0, std::sqrt(2)/2, std::sqrt(2)/2) );
         ASSERT_NEAR( eniac.left(), vec(-1, 0, 0) );
     }
+
+    SECTION( "Dual motion - right down" ) {
+        auto pair = eniac.align( vec(1, 0, 0) );
+        CHECK( pair.main == Approx(-M_PI_4) );
+        CHECK( pair.secondary == Approx(M_PI_4) );
+        ASSERT_NEAR( eniac.front(), vec(1, 0, 0) );
+        ASSERT_NEAR( eniac.left(), vec(0, 1, 0) );
+    }
+
+    SECTION( "Dual motion - left down" ) {
+        auto pair = eniac.align( vec(0, 1, 0) );
+        CHECK( pair.main == Approx(M_PI_4) );
+        CHECK( pair.secondary == Approx(M_PI_4) );
+        ASSERT_NEAR( eniac.front(), vec(0, 1, 0) );
+        ASSERT_NEAR( eniac.left(), vec(-1, 0, 0) );
+    }
 }
