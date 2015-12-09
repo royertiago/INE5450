@@ -6,6 +6,7 @@
 
 \newcommand\class[1]{\texttt{#1}}
 \newcommand\method[1]{\texttt{#1}}
+\newcommand\attribute[1]{\texttt{#1}}
 
 \begin{document}
 
@@ -89,6 +90,48 @@ that computes the rotation axis based on four measurements and an angle;
 and the \method{Ballistics::align} method,
 which is given a new measurement and tells how many radians
 each stepper motor must rotate in order to align the laser with the measurement.
+
+\subsection{The constructor}
+
+\emph{Input:}
+The \class{Ballistics} constructor will receive four measurements
+$p_1$, $p_2$, $q_1$ and $q_2$ and an angle $\alpha$.
+(Here, an \emph{measurement} is just a $3D$ point in the euclidian space.)
+Each measurement correspond to a point
+that we know was in the line of sight of the laser.
+
+\noindent \emph{Output:}
+The four attributes of the current \class{Ballistics} object.
+
+The first two measurements must be taken without moving the laser;
+therefore, the center of rotation is on the line spanned by $p_1$ and $p_2$.
+Then, the laser's line of sight must be rotated around the main rotation axis
+by a specified angle $\alpha$ (which must also be supplied to the constructor).
+The other two measurements must be taken now, again without moving the laser
+(that is, the laser only rotates once, around its main rotation axis, by $\alpha$).
+The line spanned by $q_1$ and $q_2$ therefore also contain the center.
+
+Note the center of the laser will not be on the origin;
+likewise, the rotation axis will very likely not be aligned to
+the $x$, $y$ or $z$ axis.
+
+After the execution of the constructor,
+the four attributes of the \class{Ballistics} class are computed.
+They are
+\begin{itemize}
+    \item $u = \attribute{\_up}$,
+        the vector that points ``up'' along the main rotation axis
+    \item $l = \attribute{\_left}$,
+        a vector that points ``left'' along the secondary rotation axis
+    \item $f = \attribute{\_front}$,
+        the vector that points to the ``front'' of the laser
+    \item $c = \attribute{\_center}$,
+        a point in the space which represents the center of the laser
+\end{itemize}
+Vectors $u$, $l$ and $f$ will be normalized.
+Vectors $u$ and $l$ are always orthogonal;
+vectors $l$ and $f$ are always orthogonal;
+vectors $u$ and $f$ are almost always not orthogonal.
 
 \subsection{Line-line intersection}
 
@@ -261,22 +304,6 @@ Now, substitute $\cos(\pi/2 - \alpha)$ by $\sin \alpha$, giving
 \end{align*}
 
 \subsection{Computing the angles}
-
-Suppose now we already computed the following four vectors:
-\begin{itemize}
-    \item $u = \texttt{up}$,
-        the vector that points ``up'' along the main rotation axis
-    \item $f = \texttt{front}$,
-        the vector that points to the ``front'' of the laser
-    \item $c = \texttt{center}$,
-        a point in the space which represents the center of the laser
-    \item $l = \texttt{left}$,
-        a vector that points ``left'' along the secondary rotation axis
-\end{itemize}
-
-Vectors $u$ and $l$ are always orthogonal;
-vectors $l$ and $f$ are always orthogonal;
-vectors $u$ and $f$ are almost always not orthogonal.
 
 We will now show how to update $f$ and $l$,
 given a new measurement $p$ in the space,
