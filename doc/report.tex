@@ -29,6 +29,48 @@ and after that, a laser glued to a motor will aim towards the said marker.
 
 \section{Software Engineering}
 
+Our program modules:
+\begin{itemize}
+    \item \class{Aimer} class: once the measures of the axis are made,
+there is a method in this function that creates a new thread that verify
+every time the camera detects a marker and updates the laser position.
+    \item \class{Ballistics} class: this one is responsible for computing
+how much each stepper motor must rotate. It starts its computing with
+4 measures: 2 measures for the first line, then we give a kwnown angle and
+make 2 new measures for the second line. With this measures we can infer 
+the 3 axis in witch the laser is placed.
+    \item \class{LaserAimer} class: like the \class{Aimer} class, this class
+creates a new thread in charge of controlling the motors each time the 
+\class{Aimer} thread updates the position of the marker.
+    \item \class{LaserCalibrator} class: this one is responsible for catching
+the 4 measures of the markers from the user that is using the program and make
+that measure public for other classes, like \class{Ballistics} that use this
+information to compute the axis.
+    \item \class{TargetDetector} class: this class has the function of
+detecting the augmented reality marker and giving back this information.
+It detects the marker using the Aruco library.
+This is used in \class{Aimer}, \class{LaserCalibrator} for example.
+    \item \class{Stepper} class: each instance of this class is in charge of
+controlling the PWM (Pulse Width Modulation) for each motor and it
+gives a frendlier interface to someone that want to use the motors,
+with methods such as \method{step(int n)} that execute \texttt{n} steps,
+forwards or backwards depending on the signal of \texttt{n}
+    \item math functions: generic mathematical subroutines that are mainly used in
+\class{Ballistics} 
+    \item main function: all the instances that are used in the program are
+allocated here and are passed as parameters as it is needed. 
+\end{itemize}
+
+Softwares/Libraries used:
+\begin{itemize}
+    \item Aruco: Augmented reality library, it returns if detected the marker
+and its 3D position.
+    \item OpenCV: It's a open library for computer graphics otimizing as it can,
+in multicore or in GPU. 
+    \item WiringPi: This is a small library to control the GPIO pins in the
+raspberry pi.
+\end{itemize}
+
 \section{Hardware Engineering}
 
 \section{Mathematics involved}
