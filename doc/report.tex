@@ -3,6 +3,9 @@
 \usepackage{amsmath}
 \usepackage{tikz}
 
+\newcommand\class[1]{\texttt{#1}}
+\newcommand\method[1]{\texttt{#1}}
+
 \begin{document}
 
 \title{
@@ -29,6 +32,14 @@ and after that, a laser glued to a motor will aim towards the said marker.
 \section{Hardware Engineering}
 
 \section{Mathematics involved}
+
+This section describes the mathematics behind the \class{Ballistics} class.
+
+The \class{Ballistics} class has only two methods: the constructor,
+that computes the rotation axis based on four measurements and an angle;
+and the \method{Ballistics::align} method,
+which is given a new measurement and tells how many radians
+each stepper motor must rotate in order to align the laser with the measurement.
 
 \subsection{Line-line intersection}
 
