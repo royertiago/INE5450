@@ -17,7 +17,15 @@
 \date{December 9, 2015}
 \maketitle
 
-\section{Line-line intersection}
+\section{Description of the project}
+
+\section{Software Engineering}
+
+\section{Hardware Engineering}
+
+\section{Mathematics involved}
+
+\subsection{Line-line intersection}
 
 (Based on page 304 of book "Graphic Gems")
 
@@ -60,7 +68,7 @@ so, the intersection is
 \end{equation*}
 provided the value $|| p \times q ||$ is non-zero.
 
-\section{Angle of projection}
+\subsection{Angle of projection}
 \begin{figure}[h]
     \centering
     \begin{tikzpicture}[scale = 2]
@@ -152,7 +160,7 @@ Now, replace $\sin^2 \alpha$ by $1 - \cos^2 \alpha$, giving
     \alpha &= \arccos \sqrt{\frac{\cos \gamma - 1}{\cos \beta - 1}}
 \end{align*}
 
-\section{Finding the axis}
+\subsection{Finding the axis}
 
 Using the same figure (\ref{fig:angle-of-projection}),
 now we seek a way to compute the vector $y$
@@ -187,7 +195,7 @@ Now, substitute $\cos(\pi/2 - \alpha)$ by $\sin \alpha$, giving
     \cos \delta &= \frac{\sin \alpha}{||M||}.
 \end{align*}
 
-\section{Computing the angles}
+\subsection{Computing the angles}
 
 Suppose now we already computed the following four vectors:
 \begin{itemize}
