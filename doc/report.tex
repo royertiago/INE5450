@@ -110,14 +110,14 @@ by a specified angle $\alpha$ (which must also be supplied to the constructor).
 The other two measurements must be taken now, again without moving the laser
 (that is, the laser only rotates once, around its main rotation axis, by $\alpha$).
 The line spanned by $q_1$ and $q_2$ therefore also contain the center.
+Using the computations of the section~\ref{sec:line-line-intersection},
+we can thus find the center of the laser.
 
 Note the center of the laser will not be on the origin;
 likewise, the rotation axis will very likely not be aligned to
 the $x$, $y$ or $z$ axis.
 
-After the execution of the constructor,
-the four attributes of the \class{Ballistics} class are computed.
-They are
+The four attributes of the \class{Ballistics} class are
 \begin{itemize}
     \item $u = \attribute{\_up}$,
         the vector that points ``up'' along the main rotation axis
@@ -133,7 +133,43 @@ Vectors $u$ and $l$ are always orthogonal;
 vectors $l$ and $f$ are always orthogonal;
 vectors $u$ and $f$ are almost always not orthogonal.
 
+\attribute{\_center} was already computed.
+\attribute{\_front} is easy: as it is the vector pointing along
+the laser's line of sight,
+it is just the normalized version of $q_1 - \attribute{\_center}$.
+($q_2 - \attribute{\_center}$ would work just as well.)
+Finding \attribute{\_up} is harder.
+
+Call $A = p_1 - \attribute{\_center}$, $B = q_1 - \attribute{\_center}$.
+Normalize both to get $||A|| = ||B|| = 1$.
+Vector $B$ is exactly vector $A$ rotated around \attribute{\_up}
+by $\alpha$ radians;
+we will use this fact to compute \attribute{\_up}.
+
+Note that the angle between $A$ and the plane orthogonal de \attribute{\_up}
+is the same as the angle between $B$ and this plane.
+This fact, together with the angles between $A$ and $B$
+and the angle of rotation $\alpha$,
+we can use the formula at the end of section~\ref{sec:angle-of-projection}
+to compute the angle $\beta$ between $A$ and the plane.
+(In the formula, $\alpha$ and $\beta$ have their roles reversed,
+according to figure~\ref{fig:angle-of-projection};
+$\gamma$ is the angle between $A$ and $B$.)
+
+Call $M = (A + B)/2$; the observation that $M$,
+$A \times B$ and \attribute{\_up} are all orthogonal
+will allow us to finally compute \attribute{\_up}:
+use the formula at the end of section~\ref{sec:finding-the-axis}
+to compute the angle between $M$ and \attribute{\_up},
+then rotate $M$ through that plane by the computed angle $\delta$.
+Now normalize;
+this gives us \attribute{\_up}.
+
+And, finally, given \attribute{\_up} and \attribute{\_front},
+\attribute{\_left} is just the cross product between these two.
+
 \subsection{Line-line intersection}
+\label{sec:line-line-intersection}
 
 (Based on page 304 of book "Graphic Gems")
 
@@ -177,6 +213,7 @@ so, the intersection is
 provided the value $|| p \times q ||$ is non-zero.
 
 \subsection{Angle of projection}
+\label{sec:angle-of-projection}
 \begin{figure}[h]
     \centering
     \begin{tikzpicture}[scale = 2]
@@ -269,6 +306,7 @@ Now, replace $\sin^2 \alpha$ by $1 - \cos^2 \alpha$, giving
 \end{align*}
 
 \subsection{Finding the axis}
+\label{sec:finding-the-axis}
 
 Using the same figure (\ref{fig:angle-of-projection}),
 now we seek a way to compute the vector $y$
