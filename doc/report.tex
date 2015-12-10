@@ -73,7 +73,13 @@ the laser is aimed there.
 
 \section{Software Engineering}
 
-Our program modules:
+We used an object-oriented approach to program the software;
+this section has a brief description of each class
+and the helper libraries we used in the project.
+
+All the code is available in \verb"https://github.com/royertiago/INE5450".
+
+Classes of the program:
 \begin{itemize}
     \item \class{Aimer} class: once the measures of the axis are made,
 there is a method in this function that creates a new thread that verify
@@ -105,7 +111,7 @@ forwards or backwards depending on the signal of \texttt{n}
 allocated here and are passed as parameters as it is needed. 
 \end{itemize}
 
-Softwares/Libraries used:
+Libraries used:
 \begin{itemize}
     \item Aruco: Augmented reality library, it returns if detected the marker
 and its 3D position.
