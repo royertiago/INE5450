@@ -65,6 +65,66 @@ TEST_CASE( "Construction of an origin-centered Ballistics object", "[ballistics]
     ASSERT_NEAR( eniac.left(), vec( 0, 1, 0 ) );
 }
 
+TEST_CASE( "Small precision errors on the constructor", "[ballistics][precision]" ) {
+    cv::Mat p1 = vec(1, 0, 1);
+    cv::Mat p2 = vec(2, 0, 2);
+    cv::Mat q1 = vec(std::sqrt(2)/2, std::sqrt(2)/2, 1);
+    cv::Mat q2 = vec(std::sqrt(2), std::sqrt(2), 2);
+    double angle = 3.141592653589793238462643383/4;
+
+    auto check = []( Ballistics & eniac, int line, int subline, double epsilon ) {
+        INFO( "subline = " << subline << " - actual line = " << __LINE__ + 1 );
+        assert_near( line, eniac.center(), vec(0, 0, 0), epsilon );
+        INFO( "subline = " << subline << " - actual line = " << __LINE__ + 1 );
+        assert_near( line, eniac.up(), vec(0, 0, 1), epsilon );
+        INFO( "subline = " << subline << " - actual line = " << __LINE__ + 1 );
+        assert_near( line, eniac.front(), vec(0.5, 0.5, std::sqrt(2)/2), epsilon );
+        INFO( "subline = " << subline << " - actual line = " << __LINE__ + 1 );
+        assert_near( line, eniac.left(), vec(-M_SQRT2/2, M_SQRT2/2, 0), epsilon );
+    };
+
+    // Without errors
+    Ballistics eniac( p1, p2, angle, q1, q2 );
+    check( eniac, __LINE__, __LINE__, 1e-15 );
+
+    auto test_with_error = [=]( int line, cv::Mat error, double tolerance ) {
+        Ballistics eniac( p1 + error, p2, angle, q1, q2 );
+        check( eniac, line, __LINE__, tolerance );
+
+        eniac = Ballistics( p1, p2 + error, angle, q1, q2 );
+        check( eniac, line, __LINE__, tolerance );
+
+        eniac = Ballistics( p1, p2, angle, q1 + error, q2 );
+        check( eniac, line, __LINE__, tolerance );
+
+        eniac = Ballistics( p1, p2, angle, q1, q2 + error );
+        check( eniac, line, __LINE__, tolerance );
+    };
+
+    // Error: 1e-10
+    test_with_error(__LINE__, vec(1e-10, 0, 0), 1e-9);
+    test_with_error(__LINE__, vec(0, 1e-10, 0), 1e-9);
+    test_with_error(__LINE__, vec(0, 0, 1e-10), 1e-9);
+    test_with_error(__LINE__, vec(-1e-10, 0, 0), 1e-9);
+    test_with_error(__LINE__, vec(0, -1e-10, 0), 1e-9);
+    test_with_error(__LINE__, vec(0, 0, -1e-10), 1e-9);
+
+    // Error: 1e-5, random places
+    test_with_error(__LINE__, vec(1e-5, 0, 1e-5), 1e-4);
+    test_with_error(__LINE__, vec(5e-6, -1e-5, -5e-6), 1e-4);
+    test_with_error(__LINE__, vec(7.5e-6, 7.5e-6, 7.5e-6), 1e-4);
+
+    // Error in the angle
+    eniac = Ballistics( p1, p2, angle + 1e-10, q1, q2 );
+    check( eniac, __LINE__, __LINE__, 1e-9 );
+
+    eniac = Ballistics( p1, p2, angle + 1e-5, q1, q2 );
+    check( eniac, __LINE__, __LINE__, 1e-4 );
+
+    eniac = Ballistics( p1, p2, angle + 1e-3, q1, q2 );
+    check( eniac, __LINE__, __LINE__, 1e-2 );
+}
+
 TEST_CASE( "Ballistics aiming", "[ballistics]" ) {
     cv::Mat p1 = vec(1, 0, 1);
     cv::Mat p2 = vec(2, 0, 2);
