@@ -22,12 +22,48 @@
 \date{December 9, 2015}
 \maketitle
 
-\section{Description of the project}
+\section{General description of the project}
 
-The general description of our project is:
-Given some augmented reality marker, a webcam plugged to
-a raspberry pi will locate it (if it is visible by the camera)
-and after that, a laser glued to a motor will aim towards the said marker.
+In essence, our project is an ``automatic laser aimer''.
+We built a structure with two stepper motors and an attached laser
+that will receive images from a camera.
+This image is processed by the Raspberry Pi,
+which then orders the stepper motors to rotate in order to
+make the attached laser point towards a special marker in real world.
+
+The marker is shown in figure (TODO: Add figure here).
+The exact dimensions of the marker are known;
+therefore, given a picture with the marker,
+we can compute the distance between the camera and the marker.
+The library ArUco does these calculations;
+it gives us back a point in $3D$ space,
+with the camera being the origin (point $(0, 0, 0)$).
+
+But the laser is not centered in the camera,
+so we need to calibrate the program to know where the camera is
+and what are its rotation axis.
+Four measurements are enugh:
+first, move the marker to the front of the laser and take two photos
+(with varying distances from the laser in each photo).
+These two photos gives two points in the space
+in the line of sight of the laser;
+thus, the center of the laser and these two points are collinear.
+
+Now, rotate the laser horizontally by a fixed number of degrees
+(we have chosen $10$)
+and take two more photos.
+These photos give another pair of points collinear with the center of the laser.
+This information is enough to determine everything needed
+(the center of the laser and the rotation axis);
+the maths are in section~\ref{sec:math}.
+
+With the laser calibrated,
+we can now make it aim to the marker!
+After each photo taken,
+the program calculates how much each stepper motor must rotate
+in order to make the laser point to the marker.
+After some cycles,
+the laser is aimed there.
 
 \section{Software Engineering}
 
@@ -82,6 +118,7 @@ raspberry pi.
 \end{figure}
 
 \section{Mathematics involved}
+\label{sec:math}
 
 This section describes the mathematics behind the \class{Ballistics} class.
 
