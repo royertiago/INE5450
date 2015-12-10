@@ -114,6 +114,16 @@ TEST_CASE( "Small precision errors on the constructor", "[ballistics][precision]
     test_with_error(__LINE__, vec(5e-6, -1e-5, -5e-6), 1e-4);
     test_with_error(__LINE__, vec(7.5e-6, 7.5e-6, 7.5e-6), 1e-4);
 
+    // Error: 3e-2, random places
+    test_with_error(__LINE__, vec(1e-2, 1e-2, 1e-2), 1e-1);
+    test_with_error(__LINE__, vec(-3e-2, 1e-2, 0), 1e-1);
+    test_with_error(__LINE__, vec(0, 0, 3.5e-2), 1e-1);
+
+    // Error: 0.1, random places
+    test_with_error(__LINE__, vec(0.1, 0, 0), 0.3);
+    test_with_error(__LINE__, vec(0.05, 0.05, -0.05), 0.3);
+    test_with_error(__LINE__, vec(0, -0.1, 0.05), 0.5);
+
     // Error in the angle
     eniac = Ballistics( p1, p2, angle + 1e-10, q1, q2 );
     check( eniac, __LINE__, __LINE__, 1e-9 );
