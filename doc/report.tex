@@ -41,7 +41,7 @@ with the camera being the origin (point $(0, 0, 0)$).
 
 \begin{figure}[h!]
     \includegraphics[scale=0.1]{imgs/marker.jpg}
-    \caption{The Augmented reality marker used}
+    \caption{The Augmented reality marker used.}
     \label{fig:marker}
 \end{figure}
 
@@ -82,38 +82,38 @@ All the code is available in \verb"https://github.com/royertiago/INE5450".
 Classes of the program:
 \begin{itemize}
     \item \class{Aimer} class: once the measures of the axis are made,
-there is a method in this function that creates a new thread that verify
-every time the camera detects a marker and updates the laser position.
+        there is a method in this function that creates a new thread that verify
+        every time the camera detects a marker and updates the laser position.
     \item \class{Ballistics} class: this class does the ``ballistic'' calculations
-in order to rotate the stepper motors. It only receives measurements
-and returns the rotation angles.
-This class' procedures are described in section~\ref{sec:math}.
+        in order to rotate the stepper motors. It only receives measurements
+        and returns the rotation angles.
+        This class' procedures are described in section~\ref{sec:math}.
     \item \class{LaserAimer} class: like the \class{Aimer} class, this class
-creates a new thread in charge of controlling the motors each time the 
-\class{Aimer} thread updates the position of the marker.
+        creates a new thread in charge of controlling the motors each time the
+        \class{Aimer} thread updates the position of the marker.
     \item \class{LaserCalibrator} class: this one is responsible for catching
-the 4 measures of the markers from the user that is using the program and make
-that measure public for other classes, like \class{Ballistics} that use this
-information to compute the axis.
+        the 4 measures of the markers from the user that is using the program and make
+        that measure public for other classes, like \class{Ballistics} that use this
+        information to compute the axis.
     \item \class{TargetDetector} class: this class has the function of
-detecting the augmented reality marker and giving back this information.
-It detects the marker using the Aruco library.
-This is used in \class{Aimer}, \class{LaserCalibrator} for example.
+        detecting the augmented reality marker and giving back this information.
+        It detects the marker using the Aruco library.
+        This is used in \class{Aimer}, \class{LaserCalibrator} for example.
     \item \class{Stepper} class: each instance of this class is in charge of
-controlling the PWM (Pulse Width Modulation) for each motor and it
-gives a frendlier interface to someone that want to use the motors,
-with methods such as \method{step(int n)} that execute \texttt{n} steps,
-forwards or backwards depending on the signal of \texttt{n}
+        controlling the PWM (Pulse Width Modulation) for each motor and it
+        gives a frendlier interface to someone that want to use the motors,
+        with methods such as \method{step(int n)} that execute \texttt{n} steps,
+        forwards or backwards depending on the signal of \texttt{n}
 \end{itemize}
 
 Libraries used:
 \begin{itemize}
     \item Aruco: Augmented reality library, it returns if detected the marker
-and its 3D position.
+        and its 3D position.
     \item OpenCV: It's a open library for computer graphics otimizing as it can,
-in multicore or in GPU. 
+        in multicore or in GPU. 
     \item WiringPi: This is a small library to control the GPIO pins in the
-raspberry pi.
+        raspberry pi.
 \end{itemize}
 
 \section{Hardware Engineering}
@@ -137,14 +137,16 @@ the figure~\ref{fig:h_and_m} shows it in operation
 
 \begin{figure}[h!]
     \includegraphics[scale=0.2]{imgs/hardware.jpg}
-    \caption{The complete structure}
+    \caption{The complete structure.}
     \label{fig:hardware}
 \end{figure}
 
 \begin{figure}[h!]
     \includegraphics[scale=0.1]{imgs/marker_and_hardware.jpg}
-    \caption{An example of the hardware calibrating itself with the marker on the 
-laser line}
+    \caption{
+        An example of the hardware calibrating itself
+        with the marker on the laser line.
+    }
     \label{fig:h_and_m}
 \end{figure}
 
