@@ -155,6 +155,7 @@ which is given a new measurement and tells how many radians
 each stepper motor must rotate in order to align the laser with the measurement.
 
 \subsection{The constructor}
+\label{sec:ballistics-constructor}
 
 \emph{Input:}
 The \class{Ballistics} constructor will receive four measurements
@@ -231,8 +232,56 @@ this gives us \attribute{\_up}.
 And, finally, given \attribute{\_up} and \attribute{\_front},
 \attribute{\_left} is just the cross product between these two.
 
+\subsection{Aiming the laser}
+
+After each photo taken,
+we must compute the rotation angles to realign the laser
+and update the values of \attribute{\_front} and \attribute{\_left}.
+
+Suppose we are given a new umasurement $p$.
+The first thing to do is to replase $p$ by $p - \attribute{\_center}$,
+moving the center of the laser to origin of the world.
+We will now compute the rotation angle for the main axis
+(the axis through the \attribute{\_up} vector).
+
+The rotation occours in a plane orthogonal to \attribute{\_up},
+so the angle calculation must be done there.
+Project both \attribute{\_front} and $p$ to this plane,
+and compute the angle between them;
+this is the rotation angle for the main axis.
+
+(Actually is a little more complicated:
+the angle given by the formula
+\begin{equation*}
+    \langle a, b \rangle = ||A|| ||B|| \cos \theta
+\end{equation*}
+is ``unsigned''; that is,
+it does not tell us to which side we must rotate.
+To actually get the side,
+we rotate the projection of \attribute{\_front} to both sides
+and see which came closer to the projection of $p$.)
+
+Now, we will compute the rotation on the secondary axis
+(the axis through the \attribute{\_left} vector).
+First rotate both \attribute{\_front} and \attribute{\_left}
+through \attribute{\_up} by this angle;
+\attribute{\_left} is left in its final position.
+
+Now, \attribute{\_front} and $p$
+are in the same plane orthogonal to \attribute{\_left};
+we proceed in the same manner
+--- compute the angle between \attribute{\_front} and $p$
+and discover to which side is the rotation.
+
+Finally, set \attribute{\_front} to $p / ||p||$
+(because $p$ is to which the laser points now)
+and return the computed angles.
+
 \subsection{Line-line intersection}
 \label{sec:line-line-intersection}
+
+(The remainder of this section has only the calculations
+that support the subsection~\ref{sec:ballistics-constructor}.)
 
 (Based on page 304 of book "Graphic Gems")
 
@@ -403,38 +452,5 @@ Now, substitute $\cos(\pi/2 - \alpha)$ by $\sin \alpha$, giving
 \begin{align*}
     \cos \delta &= \frac{\sin \alpha}{||M||}.
 \end{align*}
-
-\subsection{Computing the angles}
-
-We will now show how to update $f$ and $l$,
-given a new measurement $p$ in the space,
-in order to make the laser point to $p$.
-
-First, replace $p$ by $p - c$,
-thus moving the origin of the coordinate system to $c$.
-(This was the whole reason to adding $c$ to our object;
-now, we may assume that $c$ is the origin and ignore it altogether.)
-
-The rotation around the \texttt{left} axis
-will necessarily be in a plane orthogonal to $l$.
-Since the plane passes through $u$
-(as we are only moving $u$ up or down),
-we can project $p$ in this plane
-by projecting it in the axis $u$ and $u \times l$,
-and adding these parts.
-
-Call the projection $p_s$.
-To compute the actual angle of rotation,
-first compute the angle $\alpha$ between the projection and \texttt{front},
-then rotate \texttt{front} around \texttt{left} by both $\alpha$ and $-\alpha$
-and see what is closer to $p_s$;
-the ``winning'' is the angle of rotation.
-
-The computation around the \texttt{up} axis is trickier,
-because neither \texttt{front} nor the rotated \texttt{front}
-will be on the rotation plane.
-Thus, we must project both $p$ and $f$ in the rotation plane
-(spanned by $l$ and $u \times l$)
-to compute the angle between them.
 
 \end{document}
