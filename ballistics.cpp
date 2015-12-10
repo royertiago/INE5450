@@ -8,11 +8,25 @@ Ballistics::Ballistics(cv::Mat p1, cv::Mat p2, double alpha, cv::Mat q1, cv::Mat
     /* old_front is the orthonormal vector
      * that pointed to the front view of the laser,
      * in the first two measurements.
+     *
+     * Mathematically speaking, there are two possible ways of computing old_front:
+     * normalizing p1 - _center, and normalizing p2 - _center.
+     * In real life, p1 and p2 almost certainly will be given to us with errors.
+     * We hope to minimize the error by picking the largest of
+     * (p1 - _center) and (p2 - _center) to normalize.
+     * (That is, the error relative to _center will probably be smaller
+     * if we pick the vector that is more distant.)
      */
     cv::Mat old_front = p1 - _center;
+    if( cv::norm(p2 - _center) > cv::norm(old_front) )
+        old_front = p2 - _center;
+    // And now normalize.
     old_front /= cv::norm(old_front);
 
+    // Repeating the same trick for computing _front
     _front = q1 - _center;
+    if( cv::norm(q2 - _center) > cv::norm(_front) )
+        _front = q2 - _center;
     _front /= cv::norm(_front);
 
     double actual_angle = angle_between( old_front, _front );
