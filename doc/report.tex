@@ -31,7 +31,7 @@ This image is processed by the Raspberry Pi,
 which then orders the stepper motors to rotate in order to
 make the attached laser point towards a special marker in real world.
 
-The marker is shown in figure (TODO: Add figure here).
+The marker is shown in figure \ref{fig:marker}.
 The exact dimensions of the marker are known;
 therefore, given a picture with the marker,
 we can compute the distance between the camera and the marker.
@@ -39,6 +39,12 @@ The library ArUco does these calculations;
 it gives us back a point in $3D$ space,
 with the camera being the origin (point $(0, 0, 0)$).
 
+\begin{figure}[h!]
+    \includegraphics[scale=0.1]{imgs/marker.jpg}
+    \caption{The Augmented reality marker used}
+    \label{fig:marker}
+
+\end{figure}
 But the laser is not centered in the camera,
 so we need to calibrate the program to know where the camera is
 and what are its rotation axis.
@@ -111,10 +117,30 @@ raspberry pi.
 
 \section{Hardware Engineering}
 
+Hardware used:
+\begin{itemize}
+    \item Raspberry pi with Raspbian OS
+    \item 20 x male female wire
+    \item 1 x male male wire
+    \item 2 x power supply
+    \item 2 x Drive ULN2003
+    \item 2 x Stepper Motor
+    \item 1 x Mini Protoboard 170 pts
+    \item 1 x simple red laser
+    \item 1 x philips webcam
+\end{itemize}
+
 \begin{figure}[h!]
     \includegraphics[scale=0.2]{imgs/hardware.jpg}
     \caption{The complete structure}
-    \label{fig:img1}
+    \label{fig:hardware}
+\end{figure}
+
+\begin{figure}[h!]
+    \includegraphics[scale=0.1]{imgs/marker_and_hardware.jpg}
+    \caption{An example of the hardware calibrating itself with the marker on the 
+laser line}
+    \label{fig:h_and_m}
 \end{figure}
 
 \section{Mathematics involved}
