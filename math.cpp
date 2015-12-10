@@ -1,9 +1,5 @@
 #include "math.hpp"
 
-/* Based on page 304 of book "Graphics Gems".
- */
-#include <iostream>
-
 /* Returns std::acos(cosine) if cosine is on the interval [-1, 1].
  * Returns 0 if cosine > 1, and M_PI if cosine < -1.
  *
@@ -37,6 +33,8 @@ double safe_acos( double cosine ) {
     return std::acos( cosine );
 }
 
+/* Based on page 304 of book "Graphics Gems".
+ */
 cv::Mat line_line_intersection(cv::Mat p1, cv::Mat p2, cv::Mat q1, cv::Mat q2) {
     cv::Mat pd = p2 - p1; // p delta;
     cv::Mat qd = q2 - q1;
