@@ -42,7 +42,22 @@ cv::Mat line_line_intersection(cv::Mat p1, cv::Mat p2, cv::Mat q1, cv::Mat q2) {
     cv::Mat qd = q2 - q1;
     cv::Mat cross = pd.cross(qd);
     double t = (q1 - p1).cross(qd).dot(cross) / cv::norm( cross, cv::NORM_L2SQR );
-    return p1 + t * pd;
+    cv::Mat p_closest = p1 + t * pd;
+    /* It can be shown that p_closest is the point on the line spanned by (p1, p2)
+     * that is closest to the line spanned by (q1, q2).
+     * If these lines intersect,
+     * p_closest is the intersection point
+     * (because you cannot get closer to a line than actually being on this line);
+     * however, due to rounding errors and measurement imprecisions,
+     * the lines could not intersect.
+     * In this case, we will do a "best effort" computation:
+     * calculate both p_closest and q_closest, and return their intermediate point.
+     */
+    cv::Mat rcross = qd.cross(pd); // "reverse" cross-product
+    double s = (p1 - q1).cross(pd).dot(rcross) / cv::norm(rcross, cv::NORM_L2SQR );
+    cv::Mat q_closest = q1 + s * qd;
+
+    return (p_closest + q_closest)/2;
 }
 
 double angle_of_projection( double actual_angle, double projected_angle ) {
