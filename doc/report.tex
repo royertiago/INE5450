@@ -190,19 +190,19 @@ the $x$, $y$ or $z$ axis.
 
 The four attributes of the \class{Ballistics} class are
 \begin{itemize}
-    \item $u = \attribute{\_up}$,
+    \item \attribute{\_up},
         the vector that points ``up'' along the main rotation axis
-    \item $l = \attribute{\_left}$,
+    \item \attribute{\_left},
         a vector that points ``left'' along the secondary rotation axis
-    \item $f = \attribute{\_front}$,
+    \item \attribute{\_front},
         the vector that points to the ``front'' of the laser
-    \item $c = \attribute{\_center}$,
+    \item \attribute{\_center},
         a point in the space which represents the center of the laser
 \end{itemize}
-Vectors $u$, $l$ and $f$ will be normalized.
-Vectors $u$ and $l$ are always orthogonal;
-vectors $l$ and $f$ are always orthogonal;
-vectors $u$ and $f$ are almost always not orthogonal.
+Vectors \attribute{\_up}, \attribute{\_left} and \attribute{\_front} will be normalized.
+Vectors \attribute{\_up} and \attribute{\_left} are always orthogonal;
+vectors \attribute{\_left} and \attribute{\_front} are always orthogonal;
+vectors \attribute{\_up} and \attribute{\_front} are almost always not orthogonal.
 
 \attribute{\_center} was already computed.
 \attribute{\_front} is easy: as it is the vector pointing along
